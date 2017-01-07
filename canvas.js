@@ -49,7 +49,7 @@ else
 	longueur=canvas.height-30;
 }	
 precision=30;
-nbniveau=40;
+nbniveau=1;
 
 niveau=new Array();
 niveau[1]=["30","01","12","02","21","03","13"];
