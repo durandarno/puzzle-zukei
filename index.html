@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Zukei puzzle</title>
+        <script src="canvas.js" defer></script>
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    </head>
+    <body>
+	<div  onclick="this.style.visibility='hidden';" id="msgaide"><span><span id="msgaide-texte"></span></div>
+		<span class="consigne" id=consigne></span> <br/><br/><br/>
+        <canvas id="mon_canvas" width="400" height="400">
+            Message pour les navigateurs ne supportant pas encore canvas.
+        </canvas>
+        <br/>
+			<br/>
+			<input class="bouton" type="button" name="aide" id="aide" onclick="afficheaide();" value="Aide"/>
+			
+			<span id="msg">Arnaud DURAND 05/01/17 GPL v2 utilisation commerciale interdite <a href='http://mathix.org'>mathix.org</a></span>
+    </body>
+</html>
