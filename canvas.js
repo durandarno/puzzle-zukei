@@ -1,5 +1,77 @@
-function getMaxTableau(tableauNumérique) {
-    return Math.max.apply(null, tableauNumérique);
+﻿
+function effacecookie()
+{
+	setCookie('niveaufait', "", -1);
+	setCookie('nbniveau', "", -1);
+	nbniveau=1;
+	niveaufait=new Array();
+}
+
+function setCookie(cname, cvalue) {
+    var d = new Date();
+    var exdays=365;
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie() {
+    var user = getCookie("username");
+    if (user != "") {
+        alert("Welcome again " + user);
+    } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+            setCookie("username", user);
+        }
+    }
+}
+
+function insereniveaundanscookie()
+{
+	var chaine="";
+	for (var i=0;i<niveaufait.length;i++)
+	{
+		if (niveaufait[i]==1)
+		{
+			if (chaine=="")
+			{
+				chaine=i.toString();
+			}
+			else
+			{
+				chaine=chaine+"-"+i.toString();
+			}
+		}
+	}
+	setCookie('niveaufait',chaine);
+}
+
+function liretableauduncookie(cname)
+{
+	var tmp= getCookie(cname);
+	var tab=tmp.split("-");
+	return tab;
+}
+
+
+function getMaxTableau(tableauNumerique) {
+    return Math.max.apply(null, tableauNumerique);
 }
 function sansAccent(str){
     var accent = [
@@ -19,13 +91,46 @@ function sansAccent(str){
      
     return str;
 }
+cookies = document.cookie;
+var tmp= getCookie("niveaufait");
+niveaufait=new Array();
+if (tmp!="")// si un cookie est présent, on rempli la variable des niveaux faits
+{
+	var tab=liretableauduncookie("niveaufait");
+
+	for (var i=0;i<tab.length;i++)
+	{
+		niveaufait[Number(tab[i])]=1;
+	}
+	
+}
+else
+{
+	setCookie('niveaufait', "");
+}
+
+var tmp= getCookie("nbniveau");
+if (tmp!="")// si un cookie est présent, on rempli la variable des niveaux faits
+{
+	nbniveau=Number(tmp);
+	
+}
+else
+{
+	nbniveau=1;
+	setCookie('nbniveau', 1);
+
+}
+
+
+
 
 fige=false;
 pointclique=new Array();
 
 
 taille=new Array();
-taille=[0,3,3,4,4,5,5,3,3,4,4,5,5,3,3,4,4,5,5,3,3,3,3,4,3,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5];
+taille=[0,3,3,4,4,5,5,3,3,4,4,5,5,3,3,4,4,5,5,3,3,3,3,4,3,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6];
 
 decoupe=getMaxTableau(taille);
 
@@ -46,10 +151,10 @@ if (canvas.width<canvas.height)
 }
 else
 {
-	longueur=canvas.height-30;
+	longueur=canvas.height-40;
 }	
 precision=30;
-nbniveau=1;
+
 
 niveau=new Array();
 niveau[1]=["30","01","12","02","21","03","13"];
@@ -94,6 +199,7 @@ niveau[39]=["00","10","20","50","21","31","41","02","13","53","24","44","05","25
 niveau[40]=["00","50","41","52","03","23","05","35","45"];
 niveau[41]=["40","11","31","51","02","12","22","23","33","43","34","54","15","25","35"];
 niveau[42]=["40","41","03","13","23","43","53","45"];
+niveau[43]=["60","11","51","02","12","22","23","33","44","34","54","15","25","35"];
 
 
 consigne=new Array();
@@ -139,10 +245,10 @@ consigne[39]=["Trouver un carré."];
 consigne[40]=["Trouver un parallélogramme."];
 consigne[41]=["Trouver un losange."];
 consigne[42]=["Trouver un trapèze."];
-
+consigne[43]=["Trouver un losange."];
 correctionniveau= new Array();
 correctionniveau[1]=["12","02","03","13"];
-correctionniveau[2]=["00","30","02","32"];
+correctionniveau[2]=["00","30","32","02"];
 correctionniveau[3]=["20","40","42","22"];
 correctionniveau[4]=["21","31","34","24"];
 correctionniveau[5]=["12","15","45","42"];
@@ -154,16 +260,16 @@ correctionniveau[10]=["01","41","43"];
 correctionniveau[11]=["04","22","44"];
 correctionniveau[12]=["01","52","03"];
 
-correctionniveau[13]=["11","31","23","33"];
-correctionniveau[14]=["10","12","31","33"];
-correctionniveau[15]=["30","22","42","34"];
-correctionniveau[16]=["01","02","40","44"];
+correctionniveau[13]=["11","31","33","23"];
+correctionniveau[14]=["10","31","33","12"];
+correctionniveau[15]=["30","22","34","42"];
+correctionniveau[16]=["01","02","44","40"];
 correctionniveau[17]=["01","11","53","43"];
 correctionniveau[18]=["12","31","52","33"];
 correctionniveau[19]=["01","02","22"];
-correctionniveau[20]=["10","20","23","33"];
+correctionniveau[20]=["10","20","33","23"];
 correctionniveau[21]=["31","33","13"];
-correctionniveau[22]=["00","11","03","13"];
+correctionniveau[22]=["00","11","13","03"];
 correctionniveau[23]=["02","11","22","13"];
 correctionniveau[24]=["01","10","32","23"];
 correctionniveau[25]=["02","10","22","14"];
@@ -184,12 +290,18 @@ correctionniveau[39]=["00","50","55","05"];
 correctionniveau[40]=["50","52","05","03"];
 correctionniveau[41]=["31","43","35","23"];
 correctionniveau[42]=["13","23","41","40"];
-
+correctionniveau[43]=["22","51","44","15"];
 
 function ecritconsigne(message) {
 	document.getElementById('consigne').style.backgroundColor='#edffe7';
     document.getElementById('consigne').innerHTML=message;
 }
+
+function ecritchgtniveau(message) {
+	document.getElementById('consigne').style.backgroundColor='#E8E9E9';
+    document.getElementById('consigne').innerHTML=message;
+}
+
 function ecritcorrection(message,boolreussite)
 {
 	if (boolreussite)
@@ -320,6 +432,7 @@ canvas.addEventListener('mousemove', function(evt)
 		var changer_curseur=false;
 		clearCanvas(context, canvas);
 		dessinegrille(context,longueur,nbniveau);
+		var pas=longueur/11;
 		if (pointclique.length>0)
 		{	
 			trace();
@@ -345,7 +458,80 @@ canvas.addEventListener('mousemove', function(evt)
 			}
 		}
 		
+		if (Math.abs(mousePos.y-15)<4)
+		{
+			
+			if (nbniveau<5)
+			{
+				
+				for (var i=1;i<nbniveau;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2-(nbniveau-i)*pas))<4)
+					{
+						if (niveaufait[i]==1)
+						{
+							changer_curseur=true;
+							ecritchgtniveau("Aller au niveau "+i+".");
+						}
+					}
+				}
+			}
+			else
+			{
+				
+				for (var i=1;i<5;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2-i*pas))<4)
+					{
+						if (niveaufait[nbniveau-i]==1)
+						{
+							changer_curseur=true;
+							ecritchgtniveau("Aller au niveau "+(nbniveau-i)+".");
+						}
+					}
+				}
+			}
 
+			if (niveau.length-nbniveau<5)
+			{
+				for (var i=1;i<niveau.length-nbniveau;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2+i*pas))<4)
+					{
+						
+						if (niveaufait[nbniveau+i]==1)
+						{
+							changer_curseur=true;
+							ecritchgtniveau("Aller au niveau "+(nbniveau+i)+".");
+						}
+						else if (niveaufait[nbniveau+i-1]==1) // on accepte d'aller un cran plus loin
+						{
+							changer_curseur=true;
+							ecritchgtniveau("Aller au niveau "+(nbniveau+i)+".");
+						}
+					}
+				}
+			}
+			else
+			{
+				for (var i=1;i<5;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2+i*pas))<4)
+					{
+						if (niveaufait[nbniveau+i]==1)
+						{						
+							changer_curseur=true;
+							ecritchgtniveau("Aller au niveau "+(nbniveau+i)+".");
+						}
+						else if (niveaufait[nbniveau+i-1]==1) // on accepte d'aller un cran plus loin
+						{
+							changer_curseur=true;
+							ecritchgtniveau("Aller au niveau "+(nbniveau+i)+".");
+						}
+					}
+				}
+			}	
+		}
 		if (changer_curseur)
 		{
 			canvas.style.cursor='pointer';
@@ -360,7 +546,7 @@ canvas.addEventListener('mousemove', function(evt)
 	
 	  
 canvas.addEventListener('click', function(evt) 
-	{
+	{var pas=longueur/11;
 		if (! fige)
 		{
 		var mousePos = getMousePos(canvas, evt);
@@ -385,9 +571,100 @@ canvas.addEventListener('click', function(evt)
 					}
 					
 					
-		}}}
+		}}
+		
+		if (Math.abs(mousePos.y-15)<4)
+		{
+			
+			if (nbniveau<5)
+			{
+				
+				for (var i=1;i<nbniveau;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2-(nbniveau-i)*pas))<4)
+					{
+						if ((niveaufait[i]==1)||(niveaufait[i-1]==1))
+						{
+							nbniveau=i;setCookie('nbniveau', nbniveau);initialisation();
+						}
+					}
+				}
+			}
+			else
+			{
+				
+				for (var i=1;i<5;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2-i*pas))<4)
+					{
+						if ((niveaufait[nbniveau-(i)]==1)||(niveaufait[nbniveau-(i)]==1))
+						{
+							nbniveau=nbniveau-(i);setCookie('nbniveau', nbniveau);initialisation();
+						}
+					}
+				}
+			}
+
+			if (niveau.length-nbniveau<5)
+			{
+				for (var i=1;i<niveau.length-nbniveau;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2+i*pas))<4)
+					{
+						if ((niveaufait[nbniveau+i]==1)||(niveaufait[nbniveau+i-1]==1))
+						{
+							nbniveau=nbniveau+i;setCookie('nbniveau', nbniveau);initialisation();
+						}					
+					}
+				}
+			}
+			else
+			{
+				for (var i=1;i<5;i++)
+				{
+					if (Math.abs(mousePos.x-(canvas.width/2+i*pas))<4)
+					{
+						if ((niveaufait[nbniveau+i]==1)||(niveaufait[nbniveau+i-1]==1))
+						{
+							nbniveau=nbniveau+i;setCookie('nbniveau', nbniveau);initialisation();
+						}
+					}
+				}
+			}	
+		}
+		}
 	},false);
-	  
+	
+function noncroise(pointclique,pointcorrection)
+{
+	reste=3;
+	estnoncroise=true;
+	for (var i=0;i<pointclique.length;i++)
+		{
+			for (var j=0;j<pointcorrection.length;j++)
+			{
+				if (pointcorrection[j]==pointclique[i])
+				{
+					var restetmp=j%2;
+					estnoncroise=estnoncroise&&(restetmp!=reste);
+					reste=restetmp;
+				}
+			}
+		}
+		return estnoncroise;
+}
+function veriftoutestfait()
+{
+	
+	for (var i=0;i<niveau.length;i++)
+	{
+		if (niveaufait[i]!=1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
 function correction()
 {
 	fige=true;
@@ -406,17 +683,62 @@ function correction()
 		}
 		if (memetableau)
 		{
-			if ((nbniveau+1)==niveau.length)
+			if (correctionniveau[nbniveau].length==4) // c'est un quadrilatère, il faut vérifier qu'il n'est pas croisé
 			{
-				affichefelicitation();
+				if (noncroise(pointclique,correctionniveau[nbniveau]))
+				{
+					if (veriftoutestfait())
+					{
+						affichefelicitation();
+					}
+					else
+					{
+						if (nbniveau+1<niveau.length)
+						{
+							ecritcorrection('BRAVO, vous passez au niveau suivant.',true);
+						}
+						else
+						{
+							ecritcorrection('BRAVO! Il vous reste des niveaux à accomplir.',true);	
+						}
+						document.getElementById('msgaide').style.visibility='hidden';
+						setTimeout(function() {
+						fige=false;
+						niveaufait[nbniveau]=1;
+						insereniveaundanscookie();
+						// ajout dans le cookies du niveau fait
+						
+						if (nbniveau+1<niveau.length)
+						{
+							nbniveau=nbniveau+1;
+							setCookie('nbniveau', nbniveau);
+						}
+						initialisation();
+						}, 2000);
+					}
+				}
+				else
+				{
+					ecritcorrection('Non, ton quadrilatère est croisé!',false);
+					setTimeout(function() {
+					fige=false;initialisation();
+					}, 2000);
+				}
 			}
-			else
+			else // c'est un triangle
 			{
-				ecritcorrection('BRAVO, vous passez au niveau suivant.',true);
-				document.getElementById('msgaide').style.visibility='hidden';
-				setTimeout(function() {
-				fige=false;nbniveau=nbniveau+1;initialisation();
-				}, 2000);
+				if ((nbniveau+1)==niveau.length)
+				{
+					affichefelicitation();
+				}
+				else
+				{
+					ecritcorrection('BRAVO, vous passez au niveau suivant.',true);
+					document.getElementById('msgaide').style.visibility='hidden';
+					setTimeout(function() {
+					fige=false;niveaufait[nbniveau]=1;insereniveaundanscookie();nbniveau=nbniveau+1;setCookie('nbniveau', nbniveau);initialisation();
+					}, 2000);
+				}
 			}
 		}
 		else
@@ -538,6 +860,32 @@ function dessinecercle(x,y,colore)
 	context.fill();//On trace seulement les lignes pleines
 	context.closePath();
 }
+
+function dessinecerclerayon(x,y,rayon,colore)
+{
+	context.beginPath();//On démarre un nouveau trace
+	context.save();
+	context.setLineDash([0]);
+	context.lineWidth = 1;
+	context.moveTo(x,y);
+	if (colore=='gris')
+	{
+		 context.fillStyle="#F08080";
+	}
+	else if (colore=='or')
+ 	{
+			 context.fillStyle="#FFF0BC";
+	}
+	else
+	{
+		 context.fillStyle="#0000000";
+	}
+	context.arc(x, y, rayon, 0, 2 * Math.PI);
+	context.fill();//On trace seulement les lignes pleines
+	context.restore();
+	context.closePath();
+}
+
 function placer_point(nbniveau)
 {
 
@@ -567,7 +915,7 @@ context.fillStyle="#0000000";
 		{
 			nom_point=i.toString()+j.toString();
 			A[nom_point]['x']=pas*i+15;
-			A[nom_point]['y']=pas*j+15;
+			A[nom_point]['y']=40+pas*j+15;
 		}		
 	}
 	
@@ -583,6 +931,97 @@ context.fillStyle="#0000000";
 	context.stroke();//On trace seulement les lignes pleines
 	context.closePath();
 	 placer_point(nbniveau);
+	 affichebarre();
 }
 
+
+function affichebarre()
+{
+	//1 2 3 4 ..5.. 6 7 8 9
+	
+	context.beginPath();//On dÃ©marre un nouveau trace
+	context.lineWidth = 1;
+	context.fillStyle="#DCDCDC";
+	context.strokeStyle="#DCDCDC";
+	var nbniveautotal=niveau.length+1;
+	var pas=longueur/11;
+	context.setLineDash([0]);
+	var largeurbarre=canvas.width-30;
+
+	if (nbniveau<5)
+	{
+		
+		for (var i=0;i<nbniveau;i++)
+		{
+			if (niveaufait[i+1]==1)
+			{
+				dessinecerclerayon(canvas.width/2-(nbniveau-i-1)*pas, 15,3,'gris');
+			}
+			else
+			{
+				dessinecerclerayon(canvas.width/2-(nbniveau-i-1)*pas, 15,3,'rouge');
+			}
+		}
+		
+		context.moveTo(canvas.width/2-(nbniveau-1)*pas,15);
+	}
+	else
+	{
+		
+		for (var i=1;i<5;i++)
+		{
+			if (niveaufait[nbniveau-i]==1)
+			{
+				dessinecerclerayon(canvas.width/2-i*pas, 15,3,'gris');
+			}
+			else
+			{
+				dessinecerclerayon(canvas.width/2-i*pas, 15,3,'rouge');
+			}
+		}
+		dessinecerclerayon(canvas.width/2, 15,5,'or');
+		context.moveTo(canvas.width/2-4*pas,15);
+	}
+
+	if (niveau.length-nbniveau<5)
+	{
+		context.lineTo(canvas.width/2+(niveau.length-nbniveau-1)*pas,15);
+		context.stroke();//On trace seulement les lignes pleines
+		context.closePath();
+		for (var i=1;i<niveau.length-nbniveau;i++)
+		{
+			if (niveaufait[nbniveau+i]==1)
+			{
+				dessinecerclerayon(canvas.width/2+i*pas, 15,3,'gris');
+			}
+			else
+			{
+				dessinecerclerayon(canvas.width/2+i*pas, 15,3,'rouge');
+			}
+		}
+	}
+	else
+	{
+		context.lineTo(canvas.width/2+4*pas,15);
+		context.stroke();//On trace seulement les lignes pleines
+		context.closePath();
+		for (var i=1;i<5;i++)
+		{
+			if (niveaufait[nbniveau+i]==1)
+			{
+				dessinecerclerayon(canvas.width/2+i*pas, 15,3,'gris');
+			}
+			else
+			{
+				dessinecerclerayon(canvas.width/2+i*pas, 15,3,'rouge');
+			}
+		}
+	}	
+	dessinecerclerayon(canvas.width/2, 15,5,'or');
+	if (niveaufait[nbniveau]==1)
+	{
+		dessinecerclerayon(canvas.width/2, 15,2,'gris');
+	}
+
+}
 window.load=initialisation();
